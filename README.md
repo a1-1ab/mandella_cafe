@@ -148,13 +148,18 @@ Deploy from a branch → Branch: `main`, folder: `/docs` → Save**.
 
 Live at `https://a1-1ab.github.io/mandella_cafe/`.
 
-Rebuild the demo after changes:
+`docs/` contains `index.html`, `app-loader.js` and `app.bundle.b64` (the gzipped,
+base64 bundle — the Pages upload path only takes small text files), plus the CSS.
+Rebuild the demo after changes and re-package it the same way:
 
 ```bash
 cd client
 VITE_MOCK=true VITE_BASE=/mandella_cafe/ npm run build
 cp dist/index.html dist/404.html && touch dist/.nojekyll
 rm -rf ../docs && cp -r dist ../docs
+# re-package the JS bundle (keeps every committed file small)
+gzip -9 -c ../docs/assets/*.js | base64 -w 0 > ../docs/app.bundle.b64
+rm ../docs/assets/*.js
 ```
 
 To point the demo at a real API instead: build without `VITE_MOCK` and set
