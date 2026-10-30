@@ -14,7 +14,7 @@ const AppShell = () => {
 };
 
 const App = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <AuthProvider>
       <CartProvider>
         <AppShell />
