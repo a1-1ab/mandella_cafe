@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-[#E8E1D5] font-sans text-ink antialiased;
+  }
+
+  button {
+    @apply select-none;
+  }
+}
+
+@layer components {
+  .screen-scroll {
+    @apply min-h-0 flex-1 overflow-y-auto overflow-x-hidden scroll-smooth;
+    scrollbar-width: none;
+  }
+
+  .screen-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .press {
+    @apply transition-transform duration-150 active:scale-[0.97];
+  }
+}
