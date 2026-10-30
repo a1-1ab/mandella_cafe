@@ -134,21 +134,31 @@ VITE_API_URL=http://localhost:4000/api
 
 ## Deploy on GitHub Pages (free, GitHub only)
 
-GitHub Pages serves static files only, so the Express API cannot run there. The workflow
-`.github/workflows/deploy-pages.yml` therefore builds the client in **demo mode**
-(`VITE_MOCK=true`): `lib/api/mock/` implements the exact same `authApi` / `productApi` /
-`orderApi` surface as the HTTP clients, backed by the seeded menu and `localStorage`
-orders. Nothing else in the UI changes — the same screens, hooks and contexts run.
+GitHub Pages serves static files only, so the Express API cannot run there. The repo
+ships a **prebuilt demo bundle** in `docs/`, built with `VITE_MOCK=true`: `lib/api/mock/`
+implements the exact same `authApi` / `productApi` / `orderApi` surface as the HTTP
+clients, backed by the seeded menu and `localStorage` orders. Same screens, hooks and
+contexts — only the transport is swapped.
 
-The real full-stack path (Express + MongoDB) is untouched and stays the default for
-`npm run dev` / any Node host.
+The real full-stack path (Express + MongoDB) is untouched and remains the default for
+`npm run dev` and any Node host.
 
-1. Push to `main` (the workflow builds `client/` and publishes it).
-2. Repo → **Settings → Pages → Build and deployment → Source: GitHub Actions** (one click; required once).
-3. Live at `https://a1-1ab.github.io/mandella_cafe/` after the run finishes.
+**Enable it once:** repo → **Settings → Pages → Build and deployment → Source:
+Deploy from a branch → Branch: `main`, folder: `/docs` → Save**.
 
-Switching the Pages build to the real API later: remove `VITE_MOCK` from the workflow,
-set `VITE_API_URL` to your deployed API, and set `VITE_BASE` to the site path.
+Live at `https://a1-1ab.github.io/mandella_cafe/`.
+
+Rebuild the demo after changes:
+
+```bash
+cd client
+VITE_MOCK=true VITE_BASE=/mandella_cafe/ npm run build
+cp dist/index.html dist/404.html && touch dist/.nojekyll
+rm -rf ../docs && cp -r dist ../docs
+```
+
+To point the demo at a real API instead: build without `VITE_MOCK` and set
+`VITE_API_URL` to your deployed API URL.
 
 ## Environment (continued)
 
