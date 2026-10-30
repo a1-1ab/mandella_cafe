@@ -131,6 +131,27 @@ AUTO_SEED=true
 VITE_API_URL=http://localhost:4000/api
 ```
 
+
+## Deploy on GitHub Pages (free, GitHub only)
+
+GitHub Pages serves static files only, so the Express API cannot run there. The workflow
+`.github/workflows/deploy-pages.yml` therefore builds the client in **demo mode**
+(`VITE_MOCK=true`): `lib/api/mock/` implements the exact same `authApi` / `productApi` /
+`orderApi` surface as the HTTP clients, backed by the seeded menu and `localStorage`
+orders. Nothing else in the UI changes — the same screens, hooks and contexts run.
+
+The real full-stack path (Express + MongoDB) is untouched and stays the default for
+`npm run dev` / any Node host.
+
+1. Push to `main` (the workflow builds `client/` and publishes it).
+2. Repo → **Settings → Pages → Build and deployment → Source: GitHub Actions** (one click; required once).
+3. Live at `https://a1-1ab.github.io/mandella_cafe/` after the run finishes.
+
+Switching the Pages build to the real API later: remove `VITE_MOCK` from the workflow,
+set `VITE_API_URL` to your deployed API, and set `VITE_BASE` to the site path.
+
+## Environment (continued)
+
 ## Notes / known gaps from the source file
 
 - Exact font names, letter-spacing and some tiny helper lines were not readable in the
